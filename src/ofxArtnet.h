@@ -25,7 +25,7 @@ class ofxArtnet : public ofThread
 public:
     static int nodes_found;
     static bool verbose;
-    
+
     string SHORT_NAME;
     string LONG_NAME;
     static status_artnet status;
@@ -34,7 +34,7 @@ public:
     
     ofxArtnet()
     {
-        verbose = true;
+        verbose = false;
         nodes_found = 0;
         status = NOT_READY;
         SHORT_NAME = "ArtNet Node";
@@ -46,7 +46,7 @@ public:
         //stopThread();
     }
     
-    void setup(const char* interfaceIP, int port_addr = 0, int verbose = 0);
+    bool setup(const char* interfaceIP, int port_addr = 0, int verbose = 0);
     void threadedFunction();
     int sendDmx( string targetIp, const unsigned char* data512, int size );
     int sendDmx( string targetIp, int targetSubnet, int targetUniverse, const unsigned char* data512, int size );

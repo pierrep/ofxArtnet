@@ -9,7 +9,7 @@
 int ofxArtnet::nodes_found;
 bool ofxArtnet::verbose;
 status_artnet ofxArtnet::status;
-void ofxArtnet::setup(const char* interfaceIP, int port_addr, int verbose)
+bool ofxArtnet::setup(const char* interfaceIP, int port_addr, int verbose)
 {
     nodes_found = 0;
 
@@ -41,12 +41,13 @@ void ofxArtnet::setup(const char* interfaceIP, int port_addr, int verbose)
         printf("send poll failed: %s\n", artnet_strerror() );
         goto error_destroy;
 	}
-    startThread(true, false);
-    return;
+    startThread(true);
+    return true;
     
     error_destroy :
     artnet_destroy(node);
     
+    return false;
 //    free(ops.ip_addr);
 //    exit(1);
 }
@@ -77,7 +78,10 @@ void ofxArtnet::threadedFunction(){
                              break;
                      }
                  }
-                 if ( nodes_found > 0) status = NODES_FOUND;
+                 if ( nodes_found > 0) {
+                     cout << "Nodes found: " << nodes_found << endl;
+                     status = NODES_FOUND;
+                 }
                  else status = NOT_READY;
                  stopThread();
                  break;
@@ -124,7 +128,7 @@ int ofxArtnet::sendDmx( string targetIp, int targetSubnet, int targetUniverse, c
     }
     else
     {
-        if ( verbose ) printf("NODES_IS_NOT_FOUND\n");
+        if ( verbose ) printf("NODES_NOT_FOUND status = %i\n",status);
         result = ARTNET_EFOUND;
     }
     return result;
