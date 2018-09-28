@@ -33,7 +33,7 @@
 #include <netinet/in.h>
 #endif
 
-#include <common.h>
+#include "common.h"
 
 enum { ARTNET_MAX_RDM_ADCOUNT = 32 };
 

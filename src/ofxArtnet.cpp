@@ -9,7 +9,7 @@
 int ofxArtnet::nodes_found;
 bool ofxArtnet::verbose;
 status_artnet ofxArtnet::status;
-bool ofxArtnet::setup(const char* interfaceIP, int port_addr, int verbose)
+bool ofxArtnet::setup(const char* interfaceIP, uint8_t port_addr, int verbose)
 {
     nodes_found = 0;
 
@@ -41,7 +41,7 @@ bool ofxArtnet::setup(const char* interfaceIP, int port_addr, int verbose)
         printf("send poll failed: %s\n", artnet_strerror() );
         goto error_destroy;
 	}
-    startThread(true);
+    startThread();
     return true;
     
     error_destroy :
@@ -63,7 +63,7 @@ void ofxArtnet::threadedFunction(){
                      FD_ZERO(&rset);
                      FD_SET(sd, &rset);
                      tv.tv_usec = 0;
-                     tv.tv_sec = _TIMEOUT / 1000.f;
+                     tv.tv_sec = static_cast<long>(_TIMEOUT / 1000.f);
                      maxsd = sd;
                      
                      switch (select(maxsd+1, &rset, NULL, NULL, &tv)) {
