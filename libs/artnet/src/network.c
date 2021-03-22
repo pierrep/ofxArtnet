@@ -40,6 +40,7 @@ typedef int socklen_t;
 #include <windows.h>
 #endif
 #ifdef __unix
+#include <unistd.h> // for close
 #include <ifaddrs.h>
 #endif
 #ifdef __APPLE__
